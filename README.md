@@ -116,4 +116,6 @@ $ ruby lazys3.rb <COMPANY>
 
 
 
-Note: All credit goes to the original developers of the tools in this repository. I've just listed them in this repository.
+> Note: All credit goes to the original developers of the tools in this repository. I've just listed them in this repository.
+
+![Twitter Follow](https://img.shields.io/twitter/follow/hetroublemakr?color=RED&style=flat-square)
