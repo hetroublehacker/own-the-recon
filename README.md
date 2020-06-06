@@ -29,8 +29,9 @@ $ vi ~/.profile
 ```
 ### and add the following lines in `.profile`
 ```
-export GOPATH=$HOME/work
-export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
+export GOROOT=/usr/local/go
+export GOPATH=$HOME/go
+export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 ```
 source ~/.profile
 
