@@ -20,11 +20,11 @@ $ apt install python3-pip	      //for python 3
 
 ### Go language installation.
 ```
-$ curl -O https://dl.google.com/go/go1.14.4.linux-amd64.tar.gz
-$ tar xvf go1.14.4.linux-amd64.tar.gz
+$ curl -O https://golang.org/dl/go1.16.5.linux-amd64.tar.gz
+$ tar xvf go1.16.5.linux-amd64.tar.gz
 $ sudo chown -R root:root ./go
 $ sudo mv go /usr/local
-$ rm -rf go1.14.4.linux-amd64.tar.gz
+$ rm -rf go1.16.5.linux-amd64.tar.gz
 $ vi ~/.profile
 ```
 ### and add the following lines in `.profile`
