@@ -254,6 +254,309 @@ $ go install -v github.com/projectdiscovery/pdtm/cmd/pdtm@latest
 $ pdtm -install-all
 ```
 
+### Subdomain Takeover
+
+#### Subjack
+```
+$ go install github.com/haccer/subjack@latest
+$ subjack -w subdomains.txt -t 100 -timeout 30 -ssl -c fingerprints.json -v
+```
+
+#### Subzy
+```
+$ go install -v github.com/lukasikic/subzy@latest
+$ subzy run --targets subdomains.txt --concurrency 100 --hide_fails --verify_ssl
+```
+
+#### Nuclei (takeover templates)
+```
+$ nuclei -l subdomains.txt -t http/takeovers/
+```
+
+### Content Discovery & Fuzzing
+
+#### FFUF
+```
+$ go install github.com/ffuf/ffuf/v2@latest
+$ ffuf -u https://<TARGET>/FUZZ -w wordlist.txt -mc 200,301,302,403
+```
+
+#### Feroxbuster
+```
+$ curl -sL https://raw.githubusercontent.com/epi052/feroxbuster/master/install-nix.sh | bash
+$ feroxbuster -u https://<TARGET> -w wordlist.txt -x php,html,js
+```
+
+#### Wfuzz
+```
+$ pip3 install wfuzz
+$ wfuzz -c -z file,wordlist.txt --hc 404 https://<TARGET>/FUZZ
+```
+
+#### Kiterunner
+```
+$ go install github.com/assetnote/kiterunner/cmd/kr@latest
+$ kr scan hosts.txt -w routes.kite -x 10
+```
+
+### Secret & Credential Discovery
+
+#### Trufflehog
+```
+$ curl -sSfL https://raw.githubusercontent.com/trufflesecurity/trufflehog/main/scripts/install.sh | sh -s -- -b /usr/local/bin
+$ trufflehog git https://github.com/<ORG>/<REPO> --only-verified
+```
+
+#### Gitleaks
+```
+$ go install github.com/zricethezav/gitleaks/v8@latest
+$ gitleaks detect --source . --verbose
+```
+
+#### GitDorker
+```
+$ git clone https://github.com/obheda12/GitDorker.git
+$ cd GitDorker
+$ pip3 install -r requirements.txt
+$ python3 GitDorker.py -tf tokens.txt -q <DOMAIN> -d Dorks/medium_dorks.txt
+```
+
+### XSS & Injection Testing
+
+#### Dalfox
+```
+$ go install github.com/hahwul/dalfox/v2@latest
+$ cat urls.txt | dalfox pipe --silence
+```
+
+#### XSStrike
+```
+$ git clone https://github.com/s0md3v/XSStrike.git
+$ cd XSStrike
+$ pip3 install -r requirements.txt
+$ python3 xsstrike.py -u "https://<TARGET>/?q=test"
+```
+
+#### SQLMap
+```
+$ git clone --depth 1 https://github.com/sqlmapproject/sqlmap.git
+$ cd sqlmap
+$ python3 sqlmap.py -u "https://<TARGET>/?id=1" --batch --random-agent
+```
+
+### CORS & Misconfiguration
+
+#### Corsy
+```
+$ git clone https://github.com/s0md3v/Corsy.git
+$ cd Corsy
+$ pip3 install -r requirements.txt
+$ python3 corsy.py -i urls.txt
+```
+
+#### CRLFuzz
+```
+$ go install github.com/dwisiswant0/crlfuzz/cmd/crlfuzz@latest
+$ crlfuzz -l urls.txt
+```
+
+### HTTP Smuggling & Advanced Web
+
+#### Smuggler
+```
+$ git clone https://github.com/defparam/smuggler.git
+$ cd smuggler
+$ python3 smuggler.py -u https://<TARGET>
+```
+
+### Screenshots & Visual Recon
+
+#### Gowitness
+```
+$ go install github.com/sensepost/gowitness@latest
+$ gowitness file -f urls.txt --threads 10
+```
+
+#### EyeWitness
+```
+$ git clone https://github.com/RedSiege/EyeWitness.git
+$ cd EyeWitness/Python/setup
+$ ./setup.sh
+$ python3 ../EyeWitness.py -f urls.txt --web
+```
+
+### Wordlists
+
+#### SecLists
+```
+$ git clone https://github.com/danielmiessler/SecLists.git /opt/SecLists
+```
+
+#### Assetnote Wordlists
+```
+$ wget -r --no-parent -nH --cut-dirs=1 https://wordlists-cdn.assetnote.io/data/
+```
+
+#### Commonspeak2
+```
+$ go install github.com/assetnote/commonspeak2@latest
+$ commonspeak2 subdomains -p bigquery-project
+```
+
+### Out-of-Band & OSINT
+
+#### Interactsh
+```
+$ go install -v github.com/projectdiscovery/interactsh/cmd/interactsh-client@latest
+$ interactsh-client
+```
+
+#### Notify
+```
+$ go install -v github.com/projectdiscovery/notify/cmd/notify@latest
+$ cat alerts.txt | notify -provider-config provider.yaml
+```
+
+#### Uncover
+```
+$ go install -v github.com/projectdiscovery/uncover/cmd/uncover@latest
+$ uncover -q "ssl:<DOMAIN>" -e shodan,censys,fofa
+```
+
+#### Shosubgo
+```
+$ go install github.com/incogbyte/shosubgo@latest
+$ shosubgo -d <DOMAIN> -s <SHODAN_API_KEY>
+```
+
+### Network & ASN
+
+#### Asnmap
+```
+$ go install github.com/projectdiscovery/asnmap/cmd/asnmap@latest
+$ asnmap -d <DOMAIN> -silent
+```
+
+#### Mapcidr
+```
+$ go install -v github.com/projectdiscovery/mapcidr/cmd/mapcidr@latest
+$ echo "192.168.0.0/16" | mapcidr -silent
+```
+
+#### Cdncheck
+```
+$ go install -v github.com/projectdiscovery/cdncheck/cmd/cdncheck@latest
+$ cat ips.txt | cdncheck
+```
+
+#### Tlsx
+```
+$ go install github.com/projectdiscovery/tlsx/cmd/tlsx@latest
+$ tlsx -l hosts.txt -san -cn -resp-only
+```
+
+### Subdomain Permutation & DNS
+
+#### Dnsgen
+```
+$ pip3 install dnsgen
+$ cat subdomains.txt | dnsgen -
+```
+
+#### Gotator
+```
+$ go install github.com/Josue87/gotator@latest
+$ gotator -sub subdomains.txt -perm permutations.txt -depth 1 -numbers 10 -mindup
+```
+
+#### MassDNS
+```
+$ git clone https://github.com/blechschmidt/massdns.git
+$ cd massdns && make
+$ ./bin/massdns -r resolvers.txt -t A -o S subdomains.txt
+```
+
+### Crawling Utilities
+
+#### Gospider
+```
+$ go install github.com/jaeles-project/gospider@latest
+$ gospider -s https://<TARGET> -c 10 -d 3
+```
+
+#### Waymore
+```
+$ pip3 install waymore
+$ waymore -i <DOMAIN> -mode U -oU urls.txt
+```
+
+#### XnLinkFinder
+```
+$ pip3 install xnLinkFinder
+$ xnLinkFinder -i https://<TARGET> -d 2
+```
+
+### Tomnomnom Pipeline Utilities
+
+#### Anew
+```
+$ go install -v github.com/tomnomnom/anew@latest
+$ cat new.txt | anew existing.txt
+```
+
+#### GF (Pattern Matching)
+```
+$ go install -v github.com/tomnomnom/gf@latest
+$ git clone https://github.com/1ndianl33t/Gf-Patterns ~/.gf
+$ cat urls.txt | gf xss
+```
+
+#### Qsreplace
+```
+$ go install github.com/tomnomnom/qsreplace@latest
+$ cat urls.txt | qsreplace "FUZZ"
+```
+
+#### Unfurl
+```
+$ go install github.com/tomnomnom/unfurl@latest
+$ cat urls.txt | unfurl domains
+```
+
+#### Meg
+```
+$ go install github.com/tomnomnom/meg@latest
+$ meg /paths hosts.txt
+```
+
+### WAF & Tech Detection
+
+#### Wafw00f
+```
+$ pip3 install wafw00f
+$ wafw00f https://<TARGET>
+```
+
+#### Whatweb
+```
+$ sudo apt-get install whatweb
+$ whatweb https://<TARGET>
+```
+
+### Cloud & S3 Bucket Hunting
+
+#### S3Scanner
+```
+$ pip3 install s3scanner
+$ s3scanner scan --bucket-file buckets.txt
+```
+
+#### CloudList
+```
+$ go install -v github.com/projectdiscovery/cloudlist/cmd/cloudlist@latest
+$ cloudlist -config provider-config.yaml
+```
+
 
 > Note: All credit goes to the original developers of the tools in this repository. I've just listed them in this repository.
 
