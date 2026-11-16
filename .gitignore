@@ -1,0 +1,26 @@
+# Local credentials and provider configuration
+.env
+.env.*
+!.env.example
+provider-config.yaml
+provider-config.yml
+secrets.*
+
+# Recon output and evidence
+results/
+output/
+screenshots/
+*.jsonl
+*.sqlite
+*.sqlite3
+
+# Python and editor artifacts
+__pycache__/
+*.py[cod]
+.venv/
+.vscode/
+.idea/
+
+# Operating-system files
+.DS_Store
+Thumbs.db
